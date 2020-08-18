@@ -1,5 +1,6 @@
 ﻿using eShopSolution.Data.Configurations;
 using eShopSolution.Data.Entities;
+using eShopSolution.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace eShopSolution.Data.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Configure using Fluent API
             modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
 
             modelBuilder.ApplyConfiguration(new CartConfiguration());
@@ -34,6 +36,18 @@ namespace eShopSolution.Data.EF
             modelBuilder.ApplyConfiguration(new CategoryTranslationConfiguration());
             modelBuilder.ApplyConfiguration(new ProductTranslationConfiguration());
 
+            //Data Seeding
+            //modelBuilder.Entity<AppConfig>().HasData(
+            //    new AppConfig() { Key = "HomeTitle", Value = "This is home page of eShop." },
+            //    new AppConfig() { Key = "HomeKeyword", Value = "This is key word of eShop." },
+            //    new AppConfig() { Key = "HomeDescription", Value = "This is description of eShop." },
+            //    new AppConfig() { Key = "HomeTitle", Value = "This is home page of eShop." },
+            //    new AppConfig() { Key = "HomeTitle", Value = "This is home page of eShop." }
+            //    );
+            //Convert Seeding data to extension class
+            modelBuilder.Seed();
+
+            //base.OnModelCreating(modelBuilder)
         }
 
         public DbSet<AppConfig> AppConfigs { get; set; }

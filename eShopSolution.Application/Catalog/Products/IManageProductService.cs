@@ -15,19 +15,21 @@ namespace eShopSolution.Application.Catalog.Products
 
         Task<int> Update(ProductUpdateRequest request);
 
-        Task<int> Delete(int productId);
-
         Task<bool> UpdatePrice(int productId, decimal newPrice);
 
         Task<bool> UpdateStock(int productId, int addedQty);
 
+        Task<int> Delete(int productId);
+
         Task AddViewCount(int productId);
+
+        Task<ProductViewModel> GetById(int productId, string langId);
 
         Task<PageResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
 
         Task<int> AddImage(int productId, ProductImageCreateRequest files);
 
-        Task<int> RemoveImage(int imageId);
+        Task<int> DeleteImage(int imageId);
 
         Task<int> UpdateImage(int imageId, ProductImageUpdateRequest request);
 

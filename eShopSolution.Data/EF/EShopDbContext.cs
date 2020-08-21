@@ -38,6 +38,8 @@ namespace eShopSolution.Data.EF
             modelBuilder.ApplyConfiguration(new CategoryTranslationConfiguration());
             modelBuilder.ApplyConfiguration(new ProductTranslationConfiguration());
 
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
 
@@ -81,7 +83,7 @@ namespace eShopSolution.Data.EF
         public DbSet<ProductTranslation> ProductTranslations { get; set; }
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
 
-
+        public DbSet<ProductImage> ProductImages { get; set; }
 
 
     }

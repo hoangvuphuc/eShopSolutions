@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Text;
 
-namespace eShopSolution.Application.Dtos
+namespace eShopSolution.ViewModels.Common
 {
     public class PagingRequestBase
     {

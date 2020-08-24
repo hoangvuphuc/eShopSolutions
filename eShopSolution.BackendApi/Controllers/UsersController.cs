@@ -45,6 +45,7 @@ namespace eShopSolution.BackendApi.Controllers
             {
                 return BadRequest("Register is uncussessful");
             }
+
             return Ok();
         }
     }

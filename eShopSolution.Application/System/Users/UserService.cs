@@ -47,7 +47,8 @@ namespace eShopSolution.Application.System.Users
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
-                new Claim(ClaimTypes.Role, string.Join(";", roles))
+                new Claim(ClaimTypes.Role, string.Join(";", roles)),
+                new Claim(ClaimTypes.Name, request.UserName)
             };
 
             //Encript claim 
@@ -56,7 +57,7 @@ namespace eShopSolution.Application.System.Users
 
             var token = new JwtSecurityToken(
                 _config["Tokens:Issuer"],
-                _config["Token:Issuer"],
+                _config["Tokens:Issuer"],
                 claims,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);

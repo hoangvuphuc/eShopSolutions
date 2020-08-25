@@ -133,7 +133,7 @@ namespace eShopSolution.BackendApi
                 {
                     ValidateIssuer = true,
                     ValidIssuer = issuer,
-                    ValidateAudience = false,
+                    ValidateAudience = true,
                     ValidAudience = issuer,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,

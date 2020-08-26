@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace eShopSolution.ViewModels.System.Users
 {
-    public class RegisterRequest
+    public class UpdateRequest
     {
+        public Guid Id { get; set; }
+
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
@@ -22,17 +23,6 @@ namespace eShopSolution.ViewModels.System.Users
 
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
-
-        [Display(Name = "Username")]
-        public string UserName { get; set; }
-
-        
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [Display(Name = "Confirm Password")]
-        [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
 
     }
 }

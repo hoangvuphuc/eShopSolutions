@@ -138,7 +138,9 @@ namespace eShopSolution.Application.System.Users
             //4. Select and projection
             var pagedResult = new PageResult<UserViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
                 Items = data
             };
 

@@ -52,7 +52,7 @@ namespace eShopSolution.BackendApi.Controllers
                 return BadRequest(result);
             }
 
-            return Ok();
+            return Ok(result);
         }
         #endregion
 
@@ -84,12 +84,22 @@ namespace eShopSolution.BackendApi.Controllers
             return Ok(users);
         }
 
+        //GET http://localhost:port/api/user/id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var users = await _userService.GetById(id);
             return Ok(users);
         }
-        #endregion 
+        #endregion
+
+        #region Delete
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _userService.Delete(id);
+            return Ok(result);
+        }
+        #endregion
     }
 }

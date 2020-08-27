@@ -43,7 +43,7 @@ namespace eShopSolution.Application.System.Users
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null) 
-                    return null;
+                    return new ApiErrorResult<string>("User not exit");
                 
             var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
@@ -195,6 +195,23 @@ namespace eShopSolution.Application.System.Users
             };
 
             return new ApiSuccessResult<UserViewModel>(userModel);
+        }
+
+        public async Task<ApiResult<bool>> Delete(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("User not exit");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Delete not successful");
+
         }
     }
 }

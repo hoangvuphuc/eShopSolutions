@@ -31,7 +31,7 @@ namespace eShopSolution.AdminApp.Controllers
 
         #region Get User
 
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
         {
             var request =  new GetUserPagingRequest()
             {
@@ -40,6 +40,11 @@ namespace eShopSolution.AdminApp.Controllers
                 PageSize = pageSize
             };
             var data = await _userApiClient.GetUsersPagings(request);
+            ViewBag.Keyword = keyword;
+            if(TempData["Result"] != null)
+            {
+                ViewBag.SucessMsg = TempData["Result"];
+            }
             return View(data.ResultObj);
         }
 
@@ -82,6 +87,7 @@ namespace eShopSolution.AdminApp.Controllers
             var result = await _userApiClient.RegisterUser(request);
             if(result.IsSuccessed)
             {
+                TempData["result"] = "Create user success";
                 return RedirectToAction("Index", "User");
             }
 
@@ -103,7 +109,7 @@ namespace eShopSolution.AdminApp.Controllers
                 var user = result.ResultObj;
                 var updateRequest = new UpdateRequest()
                 {
-                    Id = user.Id,
+                    Id = id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
@@ -129,6 +135,7 @@ namespace eShopSolution.AdminApp.Controllers
             var result = await _userApiClient.Update(request.Id, request);
             if (result.IsSuccessed)
             {
+                TempData["result"] = "Edit user success";
                 return RedirectToAction("Index", "User");
             }
             //Add custome message to ModelState
@@ -138,7 +145,47 @@ namespace eShopSolution.AdminApp.Controllers
         }
         #endregion
 
-        #region
+        #region Delete
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _userApiClient.GetById(id);
+            if (result.IsSuccessed)
+            {
+                var user = result.ResultObj;
+                var deleteRequest = new DeleteRequest()
+                {
+                    Id = id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Email = user.Email
+                };
+                return View(deleteRequest);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var result = await _userApiClient.Delete(request.Id);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Delete user success";
+                return RedirectToAction("Index", "User");
+            }
+            //Add custome message to ModelState
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+
+        }
+
         #endregion 
 
 

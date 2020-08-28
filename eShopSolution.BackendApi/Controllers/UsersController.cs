@@ -38,6 +38,25 @@ namespace eShopSolution.BackendApi.Controllers
         }
         #endregion
 
+        #region role
+        //PUT  http://localhost:port/api/user/id
+        [HttpPut("{id}/roles")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.RoleAssign(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        #endregion
+
         #region Create
         [HttpPost("register")]
         [AllowAnonymous]

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using eShopSolution.AdminApp.Services;
+using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -21,11 +22,13 @@ namespace eShopSolution.AdminApp.Controllers
     public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
+        private readonly IRoleApiClient _roleApiClient;
         private readonly IConfiguration _configuration;
 
-        public UserController(IUserApiClient userApiClient, IConfiguration configuration)
+        public UserController(IUserApiClient userApiClient, IRoleApiClient roleApiClient, IConfiguration configuration)
         {
             _userApiClient = userApiClient;
+            _roleApiClient = roleApiClient;
             _configuration = configuration;
         }
 
@@ -188,6 +191,66 @@ namespace eShopSolution.AdminApp.Controllers
 
         #endregion 
 
+        #region RoleAssign
+        [HttpGet]
+        public async Task<IActionResult> RoleAssign(Guid id)
+        {
+            var roleAssignRequest = await GetRoleAssignRequest(id);
+            return View(roleAssignRequest);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var result = await _userApiClient.RoleAssign(request.Id, request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Assign role success";
+                return RedirectToAction("Index", "User");
+            }
+            //Add custome message to ModelState
+            ModelState.AddModelError("", result.Message);
+            var roleAssignRequest = await GetRoleAssignRequest(request.Id);
+            return View(roleAssignRequest);
+
+        }
+        #endregion
+
+        #region Common
+
+        private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
+        {
+            var userResult = await _userApiClient.GetById(id);
+            var roleResult = await _roleApiClient.GetAll();
+
+            var roleAssignRequest = new RoleAssignRequest();
+            if (userResult.IsSuccessed)
+            {
+                var user = userResult.ResultObj;
+                var roles = roleResult.ResultObj;
+
+
+                foreach (var role in roles)
+                {
+                    roleAssignRequest.Roles.Add(new SelectItem()
+                    {
+                        Id = role.Id.ToString(),
+                        Name = role.Name,
+                        Selected = user.Roles.Contains(role.Name)
+                    });
+                }
+
+            } 
+            
+            return roleAssignRequest;
+        }
+
+        #endregion
 
     }
 }

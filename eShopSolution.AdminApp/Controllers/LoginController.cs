@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using eShopSolution.AdminApp.Services;
+using eShopSolution.Utilities.Constants;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -58,8 +59,10 @@ namespace eShopSolution.AdminApp.Controllers
                 IsPersistent = false
             };
 
+            //Add default language to session
+            HttpContext.Session.SetString(SystemConstant.AppSetings.DefaultLanguageId, _configuration["DefaultLanguageId"]);
             //Add Token to session
-            HttpContext.Session.SetString("Token", rerult.ResultObj);
+            HttpContext.Session.SetString(SystemConstant.AppSetings.Token, rerult.ResultObj);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
@@ -81,9 +84,9 @@ namespace eShopSolution.AdminApp.Controllers
             TokenValidationParameters validationParameters = new TokenValidationParameters();
 
             validationParameters.ValidateLifetime = true;
-            validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
-            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+            validationParameters.ValidAudience = _configuration["Token:Issuer"];
+            validationParameters.ValidIssuer = _configuration["Token:Issuer"];
+            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"]));
 
             ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
             return principal;

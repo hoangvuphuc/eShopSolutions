@@ -26,17 +26,25 @@ namespace eShopSolution.BackendApi.Controllers
 
         #region Public
 
-        // http://localhost:port/api/product?pageIndex=1&pageSize=10&CategoryId=1 
-        [HttpGet("{langId}")]
-        public async Task<IActionResult> GetAllPaging(string langId, [FromQuery] GetPublicProductPagingRequest request)
-        {
-            var products = await _productService.GetAllByCategoryId(langId, request);
-            return Ok(products);
-        }
+        //// http://localhost:port/api/product?pageIndex=1&pageSize=10&CategoryId=1 
+        //[HttpGet("{langId}")]
+        //public async Task<IActionResult> GetAllPaging(string langId, [FromQuery] GetPublicProductPagingRequest request)
+        //{
+        //    var products = await _productService.GetAllByCategoryId(langId, request);
+        //    return Ok(products);
+        //}
 
         #endregion
 
         #region Manage
+
+        // http://localhost:port/api/product/paging?pageIndex=1&pageSize=10&CategoryId=1 
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
+        {
+            var products = await _productService.GetAllPaging(request);
+            return Ok(products);
+        }
 
         // http://localhost:port/api/product/{Id}
         [HttpGet("{productId}/{langId}")]
@@ -50,6 +58,7 @@ namespace eShopSolution.BackendApi.Controllers
 
         // http://localhost:port/api/product
         [HttpPost]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)

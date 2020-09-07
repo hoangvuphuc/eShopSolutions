@@ -194,7 +194,27 @@ namespace eShopSolution.BackendApi.Controllers
             return Ok(image);
         }
 
-        #endregion 
+        #endregion
+
+        #region CategoryAssign
+
+        //PUT  http://localhost:port/api/user/id
+        [HttpPut("{productId}/categories")]
+        public async Task<IActionResult> CategoryAssign(int productId, [FromBody] CategoryAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _productService.CategoryAssign(productId, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        #endregion
 
 
     }

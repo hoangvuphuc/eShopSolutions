@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace eShopSolution.AdminApp.Services
@@ -34,19 +35,20 @@ namespace eShopSolution.AdminApp.Services
         public async Task<PageResult<ProductViewModel>> GetPagings(GetManageProductPagingRequest request)
         {
             var result = await base.GetAsync<PageResult<ProductViewModel>>($"/api/products/paging?pageIndex=" +
-                $"{request.PageIndex}&PageSize={request.PageSize}&keyword={request.Keyword}&langId={request.LangId}");
+                $"{request.PageIndex}" +
+                $"&PageSize={request.PageSize}" +
+                $"&keyword={request.Keyword}" +
+                $"&langId={request.LangId}" +
+                $"&categoryId={request.CategoryId}");
 
             return result;
         }
 
         public async Task<ApiResult<bool>> CreateProduct(ProductCreateRequest request)
         {
-            var token = _httpContextAccessor
-                .HttpContext
-                .Session
-                .GetString(SystemConstant.AppSetings.Token);
-
+            var token = _httpContextAccessor.HttpContext.Session.GetString(SystemConstant.AppSetings.Token);
             var client = _httpClientFactory.CreateClient();
+
             client.BaseAddress = new Uri(_configuration[SystemConstant.AppSetings.BaseAddress]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -86,6 +88,31 @@ namespace eShopSolution.AdminApp.Services
             
             return new ApiErrorResult<bool>(response.ToString());
 
+        }
+
+        public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request)
+        {
+            var token = _httpContextAccessor.HttpContext.Session.GetString(SystemConstant.AppSetings.Token);
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration[SystemConstant.AppSetings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/products/{id}/categories", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ProductViewModel> GetById(int productId, string langId)
+        {
+            var data = await GetAsync<ProductViewModel>($"/api/products/{productId}/{langId}");
+            return data;
         }
     }
 }

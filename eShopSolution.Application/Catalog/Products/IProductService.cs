@@ -38,5 +38,7 @@ namespace eShopSolution.Application.Catalog.Products
         Task<ProductImageViewModel> GetImageById(int imageId);
 
         Task<List<ProductImageViewModel>> GetListImage(int productId);
+
+        Task<ApiResult<bool>> CategoryAssign(int productId, CategoryAssignRequest request);
     }
 }

@@ -11,6 +11,10 @@ namespace eShopSolution.AdminApp.Services
     {
         Task<PageResult<ProductViewModel>> GetPagings(GetManageProductPagingRequest request);
 
+        Task<ProductViewModel> GetById(int id, string langId);
+
         Task<ApiResult<bool>> CreateProduct(ProductCreateRequest request);
+
+        Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request);
     }
 }

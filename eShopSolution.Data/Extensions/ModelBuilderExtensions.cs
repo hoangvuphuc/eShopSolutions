@@ -18,12 +18,12 @@ namespace eShopSolution.Data.Extensions
 
             modelBuilder.Entity<Language>().HasData(
                 new Language() { 
-                    Id ="vi-VN", 
+                    Id ="vi", 
                     Name = "Tieng Viet", 
                     IsDefault = true 
                 },
                 new Language() { 
-                    Id = "en-US", 
+                    Id = "en", 
                     Name = "English", 
                     IsDefault = false 
                 }
@@ -54,7 +54,7 @@ namespace eShopSolution.Data.Extensions
                     Id= 1,
                     CategoryId = 1,
                     Name = "Ao nam",
-                    LanguageId = "vi-VN",
+                    LanguageId = "vi",
                     SeoDescription = "San pham ao thoi trang nam",
                     SeoTitle = "San pham ao thoi trang nam",
                     SeoAlias = "San pham ao thoi trang nam"
@@ -64,7 +64,7 @@ namespace eShopSolution.Data.Extensions
                     Id = 2,
                     CategoryId = 1,
                     Name = "Men Shirt",
-                    LanguageId = "en-US",
+                    LanguageId = "en",
                     SeoDescription = "The T-shirt products for men",
                     SeoTitle = "The T-shirt products for men",
                     SeoAlias = "San pham ao thoi trang nam"
@@ -74,7 +74,7 @@ namespace eShopSolution.Data.Extensions
                     Id = 3,
                     CategoryId = 2,
                     Name = "Ao nu",
-                    LanguageId = "vi-VN",
+                    LanguageId = "vi",
                     SeoDescription = "San pham ao thoi trang nu",
                     SeoTitle = "San pham ao thoi trang nu",
                     SeoAlias = "San pham ao thoi trang nam"
@@ -84,7 +84,7 @@ namespace eShopSolution.Data.Extensions
                     Id = 4,
                     CategoryId = 2,
                     Name = "Women Shirt",
-                    LanguageId = "en-US",
+                    LanguageId = "en",
                     SeoDescription = "The T-shirt products for women",
                     SeoTitle = "The T-shirt products for women",
                     SeoAlias = "San pham ao thoi trang nam"
@@ -109,7 +109,7 @@ namespace eShopSolution.Data.Extensions
                     Id= 1,
                     ProductId = 1,
                     Name = "Ao so mi nam Viet Tien",
-                    LanguageId = "vi-VN",
+                    LanguageId = "vi",
                     SeoAlias = "Ao-so-mi-nam-viet-tien",
                     SeoDescription = "Ao so mi nam Viet Tien",
                     SeoTitle = "Ao so mi nam Viet Tien",
@@ -121,7 +121,7 @@ namespace eShopSolution.Data.Extensions
                     Id=2,
                     ProductId = 1,
                     Name = "Viet Tien Men T-Shirt",
-                    LanguageId = "en-US",
+                    LanguageId = "en",
                     SeoAlias = "men-T-shirt",
                     SeoDescription = "TViet Tien Men T-Shirt",
                     SeoTitle = "Viet Tien Men T-Shirt",
